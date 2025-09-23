@@ -1,8 +1,11 @@
 ---
-title: Untitled
-
+title: 'L3AK CTF 2025'
+description: 'That's my first write-up.'
+pubDate: 'Sept 23 2025'
+tags: ['Write-Up', 'Forensics', 'Web']
 ---
-
+## Lời nói đầu
+Đây là một trong những Write-Up đàu tiên của mình khi bắt đầu chơi CTF. Ở giải lần này mình chỉ làm đc 3 bài Forensics và 2 bải lẻ ở mức easy, nhưng trong Write-Up này chỉ viết có 2 bài Forensics (vì lúc đó mình lười hehe). Thôi thì, đến với phần chính nào.
 # Forensics
 ## Ghost In The Dark
 ### Challenge Description
@@ -599,8 +602,8 @@ async def exfiltrate_data(channel):
     except Exception as e:
         print(f"Error cleaning up: {e}")
 
-BOT_TOKEN = "MTM2NDIzNDEzNjE5MzMzOTQyNA.GHC4yD.ZUzwkrAEMW9GlLsmVnP7FbdY317MqM234Bd2vE"
-CHANNEL_ID = 1371505369230344273
+BOT_TOKEN = "CTF{fake_token_for_writeup}" //Phần token này phải xóa đi để up lên github ;-;g
+CHANNEL_ID = 1337
 
 if __name__ == "__main__":
     bot.run(BOT_TOKEN)
