@@ -21,7 +21,7 @@ tags: ['Write-Up', 'Forensics', 'Web']
 ### Solution
 Bài cho một file Disk nên mình sử dụng `FTK imager` để phân tích, sau khi mở ra thì có thể thấy một vài file trông khá đáng nghi
 
-![image](/src/images/Ghost In The Dark/img1.png)
+![img](<../../images/L3AK2025/Ghost In The Dark/img1.png>)
 
 Bắt đầu từ file `loader.ps1`
 ```shell!
@@ -97,7 +97,7 @@ Remove-Item $MyInvocation.MyCommand.Path
 Mục đích chính của đoạn script dùng để Encrypt nội dung của file `flag.enc` bằng AES với `key=m4yb3w3d0nt3x1st` và `IV=l1f31sf0rl1v1ng!`
 Sau khi Decrypt ta nhận được flag
 
-![image](/src/images/Ghost In The Dark/img2.png)
+![img](<../../images/L3AK2025/Ghost In The Dark/img2.png>)
 
 **Flag: L3AK{d3let3d_but_n0t_f0rg0tt3n}**
 ## BOMbardino crocodile
@@ -117,16 +117,16 @@ Sau khi Decrypt ta nhận được flag
 Bài cho một file email và một thư mục dạng Disk
 Mở file email lên xem thử thì thấy được một đường dẫn mời vào discord
 
-![image](/src/images/BOMbardino crocodile/img1.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img1.png>)
 
 Sau khi vào group Discord ở trên thì thấy có 2 file trong kênh đó là `pay2winflag.jpg.enc` và `passwords.zip`, file `passwords.zip` không có gì, còn file `pay2winflag.jpg.enc` có vẻ đã bị Encrypt
 
-![image](/src/images/BOMbardino crocodile/img2.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img2.png>)
 
 Mở thư mục đã cho bằng `FTK imager` và kiểm tra thì thấy có file tên `WindowsSecure.bat` có nội dung khá đáng nghi nằm tại
 `C/Users/crustacean/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup`
 
-![image](/src/images/BOMbardino crocodile/img3.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img3.png>)
 
 Nội dung là một đoạn mã đã bị obfuscate có thể thấy phần dưới là nội dung đã bị obfuscate còn bên trên là các ký tự tương ứng
 Dựng lại code python để chạy xem nội dung phần ở dưới là gì
@@ -151,14 +151,14 @@ with open("encoded.txt", "r", encoding="utf-8") as f:
 ```
 Sau khi chạy có khá nhiều đoạn mã rác nhưng nằm ở giữa có phần ta cần tìm
 
-![image](/src/images/BOMbardino crocodile/img4.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img4.png>)
 
 Ta nhận được nửa đầu của flag `L3AK{Br40d0_st34L3r_` và một đoạn mã PowerShell 
 `startcls/minclspowershell.execls-WindowStyleHiddencls-Commandcls"C:\Users\Public\Document\pythonclsC:\Users\Public\Document\Lib\leak.py"`
 Đoạn mã này chạy file `leak.py`
 Sau khi kiểm tra theo đường dẫn ở trên thì ta đọc được nội dung của file `leak.py`
 
-![image](/src/images/BOMbardino crocodile/img5.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img5.png>)
 
 Thấy được phần quan trọng nhất
 ```python!
@@ -613,7 +613,7 @@ Nó chính là con bot Discord mà ta đã thấy ở phần đầu
 Trong code có thể thấy file `pay2winflag.png.enc` đã bị encrypt với RC4 bằng key `tralalero_tralala`
 Làm tương tự trên cyberchef và ta nhận được kết quả
 
-![image](/src/images/BOMbardino crocodile/img6.png)
+![img](<../../images/L3AK2025/BOMbardino crocodile/img6.png>)
 
 Như vậy ta nhận được flag hoàn chỉnh 
 **Flag: L3AK{Br40d0_st34L3r_0r_br41nr0t}**
@@ -627,11 +627,11 @@ Như vậy ta nhận được flag hoàn chỉnh
 ### Sollution 
 Truy cập vào trang web thì có thể thấy các bài blog và có chức năng tìm kiếm với giới hạn hà 3 ký tự
 
-![image](/src/images/Flag L3ak/img1.png)
+![img](<../../images/L3AK2025/Flag L3ak/img1.png>)
 
 Tìm thử với chuỗi `L3A` thì thấy có hai bài viết trong đó 1 bài chứa fake flag và bài còn lại có flag thật nhưng đã bị thay thế bởi dấu *
 
-![image](/src/images/Flag L3ak/img2.png)
+![img](<../../images/L3AK2025/Flag L3ak/img2.png>)
 
 Ý tưởng của mình là tìm dần từ chuỗi `K{` là phần cuối của chuỗi flag đã biết, còn ký tự cuối sẽ brute force đến khi đúng
 ```python!
@@ -685,11 +685,11 @@ Sau khi chạy mình nhận được flag
 Bài cho một file `.wav`, sau khi mở lên nghe thử thì thấy đoạn âm thanh này chia ra làm 2 phần, ở phần đầu có thể dễ dàng biết đây là mã morse, còn phần sau thì âm thanh khá hỗn loạn
 Với đoạn đầu mình sử dụng [morsecode.world](https://morsecode.world/international/decoder/audio-decoder-adaptive.html) để dịch ra kết quả
 
-![image](/src/images/Strange Transmission/img1.png)
+![img](../../images/L3AK2025/Hardware-RF/img1.png)
 
 Sau khi gõ lại thì nhận được nửa đầu của flag **L3AK{WELC0M3_T0_TH3_H4RDW4R3_RF_**
 Ở nửa sau mình mở file âm thanh này lên bằng `audacity` và chuyển chế độ xem qua Spectrogram thì nhận được nửa còn lại của flag
 
-![image](/src/images/Strange Transmission/img2.png)
+![img](../../images/L3AK2025/Hardware-RF/img2.png)
 
 **FLag: L3AK{WELC0M3_T0_TH3_H4RDW4R3_RF_c4tegory_w3_h0p3_you_h4ve_fun!}**
