@@ -24,5 +24,5 @@ export default defineConfig({
     mdx(),
     react()
   ],
-  site: 'zuytrinh.github.io'
+  site: 'https://zuytrinh.github.io'
 })
