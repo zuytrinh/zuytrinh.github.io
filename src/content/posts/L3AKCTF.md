@@ -625,7 +625,7 @@ Như vậy ta nhận được flag hoàn chỉnh
 > Author: p._.k
 
 ### Sollution 
-Truy cập vào trang web thì có thể thấy các bài blog và có chức năng tìm kiếm với giới hạn hà 3 ký tự
+Truy cập vào trang web thì có thể thấy các bài blog và có chức năng tìm kiếm với giới hạn là 3 ký tự
 
 ![img](<../../images/L3AK2025/Flag L3ak/img1.png>)
 
