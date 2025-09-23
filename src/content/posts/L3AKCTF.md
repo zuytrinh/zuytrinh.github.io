@@ -1,7 +1,7 @@
 ---
-title: 'L3AK CTF 2025'
-description: 'That's my first write-up.'
-pubDate: 'Sept 23 2025'
+title: L3AK CTF 2025
+description: That's my first write-up.
+pubDate: Sept 23 2025
 tags: ['Write-Up', 'Forensics', 'Web']
 ---
 ## Lời nói đầu
