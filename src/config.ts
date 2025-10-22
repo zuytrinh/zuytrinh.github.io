@@ -14,7 +14,7 @@ type Config = {
 export default {
   author: 'Samuel Breznjak',
   title: 'zuytr1nhh',
-  description: 'idk',
+  description: 'something here',
   lang: 'en',
   themes: {
     dark: 'github-dark',
