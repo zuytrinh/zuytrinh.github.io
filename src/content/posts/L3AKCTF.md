@@ -98,8 +98,9 @@ Mục đích chính của đoạn script dùng để Encrypt nội dung của fi
 Sau khi Decrypt ta nhận được flag
 
 ![img](<../../images/L3AK2025/Ghost In The Dark/img2.png>)
-
-**Flag: L3AK{d3let3d_but_n0t_f0rg0tt3n}**
+```
+Flag: L3AK{d3let3d_but_n0t_f0rg0tt3n}
+```
 ## BOMbardino crocodile
 ### Challenge Description
 > APT Lobster has successfully breached a machine in our
@@ -691,5 +692,6 @@ Sau khi gõ lại thì nhận được nửa đầu của flag **L3AK{WELC0M3_T0
 Ở nửa sau mình mở file âm thanh này lên bằng `audacity` và chuyển chế độ xem qua Spectrogram thì nhận được nửa còn lại của flag
 
 ![img](../../images/L3AK2025/Hardware-RF/img2.png)
-
-**FLag: L3AK{WELC0M3_T0_TH3_H4RDW4R3_RF_c4tegory_w3_h0p3_you_h4ve_fun!}**
+```
+FLag: L3AK{WELC0M3_T0_TH3_H4RDW4R3_RF_c4tegory_w3_h0p3_you_h4ve_fun!}
+```
