@@ -1,7 +1,7 @@
 ---
-title: L3AK CTF 2025
+title: WannaGame Championship 2025
 description: Khá lâu rồi mới viết WriteUp....
-pubDate: Sept 23 2025
+pubDate: Dec 07 2025
 tags: ['Write-Up', 'Forensics']
 ---
 # Comunicate
