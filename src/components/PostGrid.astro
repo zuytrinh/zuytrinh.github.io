@@ -1,0 +1,100 @@
+---
+import type { Post } from '@/content/config'
+import PostPreview from '@/components/PostPreview.astro'
+
+type Props = {
+  posts: Post[]
+  currentPage: number
+  totalPages: number
+  totalPosts: number
+}
+
+const { posts, currentPage, totalPages, totalPosts } = Astro.props
+const pageHref = (page: number) => (page === 1 ? '/' : `/page/${page}`)
+---
+
+<section class="border-b border-black/10 pb-9 dark:border-white/10">
+  <div>
+    <div>
+      <p class="mb-3 text-xs font-medium uppercase text-accentColor">
+        Archive / {String(totalPosts).padStart(2, '0')}
+      </p>
+      <h1 class="max-w-[620px] text-4xl font-medium leading-tight w500:text-3xl">
+        Write-ups & security notes.
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="mt-8 grid grid-cols-12 gap-5" aria-label="Bài viết">
+  {
+    posts.map((post, index) => {
+      const position = index % 4
+      const wide = position === 0 || position === 3
+
+      return (
+        <div
+          class:list={[
+            'col-span-12',
+            wide ? 'md:col-span-7' : 'md:col-span-5'
+          ]}
+        >
+          <PostPreview
+            url={post.slug}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            wide={wide}
+          />
+        </div>
+      )
+    })
+  }
+</section>
+
+{
+  totalPages > 1 && (
+    <nav
+      class="mt-10 flex items-center justify-center gap-2"
+      aria-label="Phân trang bài viết"
+    >
+      {currentPage > 1 && (
+        <a
+          class="grid h-9 w-9 place-items-center border border-black/10 transition-colors hover:border-accentColor hover:text-accentColor dark:border-white/10"
+          href={pageHref(currentPage - 1)}
+          aria-label="Trang trước"
+        >
+          ←
+        </a>
+      )}
+
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+        (page) => (
+          <a
+            class:list={[
+              'grid h-9 min-w-9 place-items-center border px-2 text-sm transition-colors',
+              page === currentPage
+                ? 'border-accentColor bg-accentColor text-black'
+                : 'border-black/10 hover:border-accentColor hover:text-accentColor dark:border-white/10'
+            ]}
+            href={pageHref(page)}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            {page}
+          </a>
+        )
+      )}
+
+      {currentPage < totalPages && (
+        <a
+          class="grid h-9 w-9 place-items-center border border-black/10 transition-colors hover:border-accentColor hover:text-accentColor dark:border-white/10"
+          href={pageHref(currentPage + 1)}
+          aria-label="Trang sau"
+        >
+          →
+        </a>
+      )}
+    </nav>
+  )
+}

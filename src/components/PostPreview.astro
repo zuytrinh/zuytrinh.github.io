@@ -1,40 +1,75 @@
 ---
-const { url, title, description, pubDate } = Astro.props
+const { url, title, description, pubDate, tags, wide = false } = Astro.props
+const postHref = url.startsWith('/') ? url : `/${url}`
 ---
 
-<div class="mb-[60px] last:mb-0">
-  <div class="w-max">
-    <a class="group text-accentColor duration-200" href={url}>
+<article
+  class:list={[
+    'group flex h-full min-h-[245px] flex-col border border-black/10 bg-white/20 p-7 transition-colors duration-200 hover:border-accentColor/70 dark:border-white/10 dark:bg-white/[0.025] dark:hover:border-accentColor/70 w500:min-h-0 w500:p-5',
+    wide && 'md:min-h-[275px]'
+  ]}
+>
+  <div class="flex items-start justify-between gap-5">
+    <div class="flex flex-wrap gap-x-3 gap-y-1">
+      {
+        tags.map((tag: string) => (
+          <a
+            class="text-xs font-medium text-accentColor hover:underline"
+            href={`/tags/${tag}`}
+          >
+            #{tag}
+          </a>
+        ))
+      }
+    </div>
+
+    <span
+      class="translate-x-0 text-xl leading-none text-accentColor transition-transform duration-200 group-hover:translate-x-1"
+      aria-hidden="true"
+    >
+      →
+    </span>
+  </div>
+
+  <div class="mt-8 flex flex-1 flex-col w500:mt-6">
+    <a class="w-fit" href={postHref}>
       <h2
         transition:name={`${title}-${pubDate}`}
-        class="text-2xl font-medium w500:text-lg"
+        class="text-2xl font-medium leading-snug text-lightModeText transition-colors duration-200 group-hover:text-accentColor dark:text-darkModeText w500:text-xl"
       >
         {title}
       </h2>
-      <span
-        class="relative bottom-0.5 block h-0.5 max-w-0 bg-accentColor transition-all duration-300 group-hover:max-w-full"
-      ></span>
     </a>
-  </div>
-  <p
-    class="mb-5 mt-2.5 leading-relaxed tracking-wide w500:text-sm w500:leading-[2.2]"
-  >
-    {description}
-  </p>
-  <div class="flex w-max items-center">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="mr-3 h-4 w-4 w500:h-3 w500:w-3"
-      viewBox="-0.5 0 15 15"
+
+    <p
+      class:list={[
+        'post-description mt-4 max-w-[58ch] text-sm leading-7 text-black/60 dark:text-white/60',
+        wide ? 'post-description--wide' : 'post-description--compact'
+      ]}
     >
-      <path
-        class="fill-lightModeText dark:fill-darkModeText"
-        fill-rule="evenodd"
-        d="M61,154.006845 C61,153.45078 61.4499488,153 62.0068455,153 L73.9931545,153 C74.5492199,153 75,153.449949 75,154.006845 L75,165.993155 C75,166.54922 74.5500512,167 73.9931545,167 L62.0068455,167 C61.4507801,167 61,166.550051 61,165.993155 L61,154.006845 Z M62,157 L74,157 L74,166 L62,166 L62,157 Z M64,152.5 C64,152.223858 64.214035,152 64.5046844,152 L65.4953156,152 C65.7740451,152 66,152.231934 66,152.5 L66,153 L64,153 L64,152.5 Z M70,152.5 C70,152.223858 70.214035,152 70.5046844,152 L71.4953156,152 C71.7740451,152 72,152.231934 72,152.5 L72,153 L70,153 L70,152.5 Z"
-        transform="translate(-61 -152)"></path>
-    </svg>
-    <p class="text-sm leading-5 tracking-wide w500:text-xs">
-      {pubDate}
+      {description}
     </p>
+
+    <div
+      class="mt-auto border-t border-black/10 pt-5 text-xs font-medium uppercase text-black/55 dark:border-white/10 dark:text-white/55 w500:mt-6"
+    >
+      {pubDate}
+    </div>
   </div>
-</div>
+</article>
+
+<style>
+  .post-description {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+  }
+
+  .post-description--wide {
+    -webkit-line-clamp: 3;
+  }
+
+  .post-description--compact {
+    -webkit-line-clamp: 2;
+  }
+</style>

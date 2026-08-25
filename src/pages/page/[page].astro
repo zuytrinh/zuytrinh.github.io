@@ -1,0 +1,43 @@
+---
+import config from '@/config'
+import { getCollection } from 'astro:content'
+
+import Base from '@/layouts/Base.astro'
+import PostGrid from '@/components/PostGrid.astro'
+
+export async function getStaticPaths() {
+  const postsPerPage = 4
+  const allPosts = await getCollection('posts')
+  const sortedPosts = allPosts.sort(
+    (a, b) =>
+      new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+  )
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage)
+
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+    const currentPage = index + 2
+    const start = (currentPage - 1) * postsPerPage
+
+    return {
+      params: { page: String(currentPage) },
+      props: {
+        posts: sortedPosts.slice(start, start + postsPerPage),
+        currentPage,
+        totalPages,
+        totalPosts: sortedPosts.length
+      }
+    }
+  })
+}
+
+const { posts, currentPage, totalPages, totalPosts } = Astro.props
+---
+
+<Base meta={{ title: `Page ${currentPage} | ${config.title}` }}>
+  <PostGrid
+    posts={posts}
+    currentPage={currentPage}
+    totalPages={totalPages}
+    totalPosts={totalPosts}
+  />
+</Base>
