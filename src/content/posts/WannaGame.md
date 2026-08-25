@@ -448,8 +448,7 @@ raw = r"\x00\x6b\xfb..."  # nội dung từ gist
 matches = re.findall(r'\\x([0-9A-Fa-f]{2})', raw)
 payload_bytes = bytes(int(m, 16) for m in matches)
 
-# XOR key (sau khi decrypt từ bước 1)
-xor_key = b"XOR_KEY_PLAINTEXT_HERE"
+xor_key = b"M1kar1"
 
 # Decrypt
 result = bytes(payload_bytes[i] ^ xor_key[i % len(xor_key)] 
