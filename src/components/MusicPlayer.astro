@@ -1,0 +1,426 @@
+<aside
+  id="music-player"
+  class="music-player"
+  aria-label="Trình phát nhạc"
+  transition:persist="music-player"
+>
+  <img
+    class="music-player__cover"
+    src="/images/neu-nhu-em-con-cho.webp"
+    alt="Ảnh bìa bài Nếu Như Em Còn Chờ"
+    width="300"
+    height="300"
+    data-player-cover
+  />
+
+  <div class="music-player__content">
+    <div class="music-player__heading">
+      <div class="music-player__details">
+        <p class="music-player__title" data-player-title>Nếu Như Em Còn Chờ</p>
+        <p class="music-player__artist" data-player-artist>GIO</p>
+      </div>
+
+      <div class="music-player__controls">
+        <button
+          class="music-player__toggle"
+          type="button"
+          aria-label="Phát nhạc"
+          aria-pressed="false"
+          data-player-toggle
+        >
+          <svg class="music-player__play" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8.25 5.4v13.2L18.5 12 8.25 5.4Z"></path>
+          </svg>
+          <svg class="music-player__pause" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7.25 5.5h3.5v13h-3.5zM13.25 5.5h3.5v13h-3.5z"></path>
+          </svg>
+        </button>
+
+        <button
+          class="music-player__next"
+          type="button"
+          aria-label="Bài tiếp theo"
+          data-player-next
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.5 5.75v12.5L15.75 12 6.5 5.75ZM16.5 5.75h2v12.5h-2V5.75Z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="music-player__timeline">
+      <span data-player-current>0:00</span>
+      <input
+        class="music-player__progress"
+        type="range"
+        min="0"
+        max="1000"
+        value="0"
+        step="1"
+        aria-label="Tiến trình bài hát"
+        data-player-progress
+      />
+      <span data-player-duration>--:--</span>
+    </div>
+  </div>
+
+  <audio preload="metadata" src="/audio/neu-nhu-em-con-cho.mp3" data-player-audio></audio>
+</aside>
+
+<script>
+  const tracks = [
+    {
+      title: 'Nếu Như Em Còn Chờ',
+      artist: 'GIO',
+      audio: '/audio/neu-nhu-em-con-cho.mp3',
+      cover: '/images/neu-nhu-em-con-cho.webp'
+    },
+    {
+      title: 'chẳng phải tình đầu sao đau đến thế',
+      artist: 'MIN, Dangrangto & antransax',
+      audio: '/audio/chang-phai-tinh-dau-sao-dau-den-the.mp3',
+      cover: '/images/chang-phai-tinh-dau-sao-dau-den-the.webp'
+    },
+    {
+      title: 'Em (feat. SOOBIN)',
+      artist: 'Binz',
+      audio: '/audio/em-feat-soobin.mp3',
+      cover: '/images/em-feat-soobin.webp'
+    },
+    {
+      title: 'Nếu Như Ta Chẳng Còn (feat. A$AP Ướt Mi)',
+      artist: 'RPT MCK',
+      audio: '/audio/neu-nhu-ta-chang-con.mp3',
+      cover: '/images/neu-nhu-ta-chang-con.webp'
+    }
+  ]
+
+  function formatTime(value: number) {
+    if (!Number.isFinite(value)) return '--:--'
+
+    const minutes = Math.floor(value / 60)
+    const seconds = Math.floor(value % 60)
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
+  function setupMusicPlayer() {
+    const player = document.querySelector<HTMLElement>('#music-player')
+    if (!player || player.dataset.ready === 'true') return
+
+    const audio = player.querySelector<HTMLAudioElement>('[data-player-audio]')
+    const cover = player.querySelector<HTMLImageElement>('[data-player-cover]')
+    const title = player.querySelector<HTMLElement>('[data-player-title]')
+    const artist = player.querySelector<HTMLElement>('[data-player-artist]')
+    const toggle = player.querySelector<HTMLButtonElement>('[data-player-toggle]')
+    const next = player.querySelector<HTMLButtonElement>('[data-player-next]')
+    const progress = player.querySelector<HTMLInputElement>('[data-player-progress]')
+    const current = player.querySelector<HTMLElement>('[data-player-current]')
+    const duration = player.querySelector<HTMLElement>('[data-player-duration]')
+
+    if (
+      !audio ||
+      !cover ||
+      !title ||
+      !artist ||
+      !toggle ||
+      !next ||
+      !progress ||
+      !current ||
+      !duration
+    )
+      return
+    player.dataset.ready = 'true'
+    let trackIndex = 0
+
+    const updateProgress = () => {
+      const ratio = audio.duration ? audio.currentTime / audio.duration : 0
+      const value = Math.round(ratio * Number(progress.max))
+      progress.value = String(value)
+      progress.style.setProperty('--progress', `${ratio * 100}%`)
+      current.textContent = formatTime(audio.currentTime)
+    }
+
+    const updateDuration = () => {
+      duration.textContent = formatTime(audio.duration)
+      updateProgress()
+    }
+
+    const updatePlaybackState = () => {
+      const isPlaying = !audio.paused
+      player.classList.toggle('is-playing', isPlaying)
+      toggle.ariaPressed = String(isPlaying)
+      toggle.ariaLabel = isPlaying ? 'Tạm dừng nhạc' : 'Phát nhạc'
+    }
+
+    const selectTrack = async (index: number, shouldPlay: boolean) => {
+      trackIndex = (index + tracks.length) % tracks.length
+      const track = tracks[trackIndex]!
+
+      title.textContent = track.title
+      title.title = track.title
+      artist.textContent = track.artist
+      artist.title = track.artist
+      cover.src = track.cover
+      cover.alt = `Ảnh bìa bài ${track.title}`
+      audio.src = track.audio
+      current.textContent = '0:00'
+      duration.textContent = '--:--'
+      progress.value = '0'
+      progress.style.setProperty('--progress', '0%')
+      audio.load()
+
+      if (shouldPlay) {
+        try {
+          await audio.play()
+        } catch {
+          updatePlaybackState()
+        }
+      }
+    }
+
+    toggle.addEventListener('click', async () => {
+      if (audio.paused) {
+        try {
+          await audio.play()
+        } catch {
+          updatePlaybackState()
+        }
+      } else {
+        audio.pause()
+      }
+    })
+
+    next.addEventListener('click', () => {
+      void selectTrack(trackIndex + 1, !audio.paused)
+    })
+
+    progress.addEventListener('input', () => {
+      if (!audio.duration) return
+      audio.currentTime =
+        (Number(progress.value) / Number(progress.max)) * audio.duration
+      updateProgress()
+    })
+
+    audio.addEventListener('loadedmetadata', updateDuration)
+    audio.addEventListener('durationchange', updateDuration)
+    audio.addEventListener('timeupdate', updateProgress)
+    audio.addEventListener('play', updatePlaybackState)
+    audio.addEventListener('pause', updatePlaybackState)
+    audio.addEventListener('ended', () => {
+      void selectTrack(trackIndex + 1, true)
+    })
+
+    updatePlaybackState()
+    if (audio.readyState >= 1) updateDuration()
+  }
+
+  setupMusicPlayer()
+  document.addEventListener('astro:page-load', setupMusicPlayer)
+</script>
+
+<style>
+  .music-player {
+    position: fixed;
+    z-index: 50;
+    bottom: 18px;
+    left: 18px;
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+    width: min(280px, calc(100vw - 36px));
+    min-height: 78px;
+    padding: 10px;
+    color: #f7f7f7;
+    background: rgba(13, 13, 14, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+  }
+
+  .music-player__cover {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .music-player__content {
+    min-width: 0;
+    padding-left: 11px;
+  }
+
+  .music-player__heading {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    gap: 8px;
+  }
+
+  .music-player__details {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .music-player__controls {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .music-player__title,
+  .music-player__artist {
+    overflow: hidden;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .music-player__title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .music-player__artist {
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .music-player__toggle {
+    display: grid;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    place-items: center;
+    color: #111112;
+    background: #f7f7f7;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      transform 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .music-player__toggle:hover {
+    background: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .music-player__next {
+    display: grid;
+    flex: 0 0 25px;
+    width: 25px;
+    height: 32px;
+    padding: 0;
+    place-items: center;
+    color: rgba(255, 255, 255, 0.62);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      color 150ms ease,
+      transform 150ms ease;
+  }
+
+  .music-player__next:hover {
+    color: #ffffff;
+    transform: translateX(1px);
+  }
+
+  .music-player__toggle:focus-visible,
+  .music-player__next:focus-visible,
+  .music-player__progress:focus-visible {
+    outline: 2px solid #ee4a24;
+    outline-offset: 2px;
+  }
+
+  .music-player__toggle svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+  }
+
+  .music-player__next svg {
+    width: 17px;
+    height: 17px;
+    fill: currentColor;
+  }
+
+  .music-player__play {
+    margin-left: 2px;
+  }
+
+  .music-player__pause,
+  .is-playing .music-player__play {
+    display: none;
+  }
+
+  .is-playing .music-player__pause {
+    display: block;
+  }
+
+  .music-player__timeline {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 28px;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .music-player__progress {
+    --progress: 0%;
+    width: 100%;
+    height: 3px;
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    background: linear-gradient(
+      to right,
+      #ee4a24 0 var(--progress),
+      rgba(255, 255, 255, 0.22) var(--progress) 100%
+    );
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .music-player__progress::-webkit-slider-thumb {
+    width: 8px;
+    height: 8px;
+    appearance: none;
+    background: #f7f7f7;
+    border: 0;
+    border-radius: 50%;
+  }
+
+  .music-player__progress::-moz-range-thumb {
+    width: 8px;
+    height: 8px;
+    background: #f7f7f7;
+    border: 0;
+    border-radius: 50%;
+  }
+
+  @media (max-width: 500px) {
+    .music-player {
+      bottom: 12px;
+      left: 12px;
+      width: min(280px, calc(100vw - 24px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .music-player__toggle,
+    .music-player__next {
+      transition: none;
+    }
+  }
+</style>

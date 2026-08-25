@@ -66,6 +66,7 @@ Failed to parse hashes using the 'pwdump' format.
 2d20d252a479f485cdf5e171d93985bf:qwerty
 ```
 Vậy có mật khẩu là `qwerty` sau đó chỉ cần SHA1 là xong
+
 Bước 2: Lấy Master key GUID
 Tại `Roaming\Signal\Local State` là JSON chứa DPAPI blob được Base64 encode, dùng `cyberchef` để xử lý lấy blob hex
 ![alt text](../../images/WannaGame/image4.png)
